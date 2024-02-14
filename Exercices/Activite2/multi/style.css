@@ -1,0 +1,59 @@
+.div-table {
+  margin-bottom: 20px;
+  display: inline-block;
+  vertical-align: top;
+  padding: 10px;
+  max-width: calc(50% - 20px);
+  box-sizing: border-box;
+  width: 100%;
+  text-align: center;
+}
+
+h2 {
+  text-align: center;
+}
+
+.multiplication-table {
+  border: 1px solid black;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.multiplication-table td {
+  padding: 8px;
+}
+
+.left {
+  text-align: left;
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}
+
+.result {
+  font-weight: bold;
+  text-align: right;
+}
+
+.row {
+  margin-bottom: 20px;
+  display: flex;
+  width: 100%;
+}
+
+.table-container {
+  border: 1px solid black;
+  margin-bottom: 20px;
+  width: 100%;
+  min-width: 800px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  align-items: flex-start;
+}
