@@ -59,4 +59,26 @@ trait CitationTrait
         ];
         return $citations;
     }
+
+    /**
+     * Checks if an author exists based on first name, last name, and birth year.
+     * If found, returns the Author object; otherwise, returns null.
+     *
+     * @param string $firstName The first name of the author.
+     * @param string $lastName  The last name of the author.
+     * @param int    $birthYear The birth year of the author.
+     *
+     * @return Author|null       The Author object if found, otherwise null.
+     */
+    public function findAuthor(string $firstName, string $lastName, int $birthYear): ?Author
+    {
+        // Loop through existing authors to find a match
+        foreach ($this->main() as $citation) {
+            $author = $citation->getAuthor();
+            if ($author->getFirstName() === $firstName && $author->getLastName() === $lastName && $author->getBirthYear() === $birthYear) {
+                return $author;
+            }
+        }
+        return null; // Author not found
+    }
 }

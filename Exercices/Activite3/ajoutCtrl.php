@@ -1,6 +1,8 @@
 <?php
 /**
- * A page to enter a citation in a form, and send it to a viewCitation page.
+ * A page to enter a citation in a form, and send it back to this page
+ * for verification,
+ * if everything is correct, we visualize all citations below the form.
  */
 declare(strict_types=1);
 error_reporting(E_ALL);
@@ -11,7 +13,7 @@ require_once 'Entity/CitationTrait.php';
 
 use CitationTrait;
 
-// Initialize error variables
+// Initialize error variables as empty
 $loginError = $citationError = $dateError = $firstNameError = $lastNameError = $birthYearError = '';
 $showCitations = false; // Control display of citations section
 
@@ -19,6 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Validate login
     if (empty($_POST['login'])) {
         $loginError = 'Le champ Login est requis';
+    } elseif (strlen($_POST['login']) > 64) {
+        $loginError = 'Le login ne doit pas depasser 64 caractères';
     }
 
     // Validate citation
@@ -36,23 +40,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Validate author's first name
     if (empty($_POST['firstName'])) {
         $firstNameError = 'Le prenom de l\'auteur est requis';
+    } elseif (!preg_match('/^[a-zA-ZÀ-ÿ\s\'\-]+$/', $_POST['firstName'])) {
+        $firstNameError = 'Le prenom de l\'auteur ne doit contenir que des lettres, des espaces, des apostrophes et des tirets';
     }
 
     // Validate author's last name
     if (empty($_POST['lastName'])) {
         $lastNameError = 'Le nom de l\'auteur est requis';
+    } elseif (!preg_match('/^[a-zA-ZÀ-ÿ\s\'\-]+$/', $_POST['lastName'])) {
+        $lastNameError = 'Le nom de l\'auteur ne doit contenir que des lettres, des espaces, des apostrophes et des tirets';
     }
 
     // Validate author's birth year
     if (empty($_POST['birthYear'])) {
         $birthYearError = 'L\'annee de naissance de l\'auteur est requise';
-    } elseif (!preg_match('/^\d{4}$/', $_POST['birthYear'])) {
-        $birthYearError = 'Le format de l\'annee de naissance est incorrect (4 chiffres)';
+    } elseif (!preg_match('/^-?\d+$/', $_POST['birthYear']) || $_POST['birthYear'] < -10000 || $_POST['birthYear'] > 3000) {
+        $birthYearError = 'Le format de l\'annee de naissance est incorrect (un nombre entre -10000 et 3000)';
     }
 
     // If there are no errors, proceed to create the Author and Citation objects
     if (empty($loginError) && empty($citationError) && empty($dateError) && empty($firstNameError) && empty($lastNameError) && empty($birthYearError)) {
-        $author = new Author($_POST['firstName'] . ' | ' . $_POST['lastName'], (int)$_POST['birthYear']);
+        $existingAuthor = (new class () {
+            use CitationTrait;
+        })->findAuthor($_POST['firstName'], $_POST['lastName'], (int)$_POST['birthYear']);
+        if ($existingAuthor) {
+            $author = $existingAuthor;
+        } else {
+            $author = new Author($_POST['firstName'] . ' | ' . $_POST['lastName'], (int)$_POST['birthYear']);
+        }
         $citations = (new class () {
             use CitationTrait;
         })->main();
@@ -69,17 +84,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 $existingAuthors = [];
 foreach ($citations as $citation) {
     $author = $citation->getAuthor();
-    $fullName = $author->getFullName(); // Assuming this returns "First Name | Last Name"
-    $firstName = $author->getFirstName(); // Assuming this returns "First Name | Last Name"
-    $lastName = $author->getLastName(); // Assuming this returns "First Name | Last Name"
+    $fullName = $author->getFullName();
+    $firstName = $author->getFirstName();
+    $lastName = $author->getLastName();
     $birthYear = $author->getBirthYear();
+    $nbCitations = $author->getNbCitations();
     $existingAuthors[$fullName] = [
         'firstName' => $firstName,
         'lastName' => $lastName,
-        'birthYear' => $birthYear
+        'birthYear' => $birthYear,
+        'nbCitations' => $nbCitations,
     ];
 }
-
 
 
 ?>
@@ -109,7 +125,7 @@ foreach ($citations as $citation) {
                 <tr>
                     <th><label for="existingAuthors">Auteurs existants :</label></th>
                     <td><select name="existingAuthors" id="existingAuthors" onchange="fillAuthorDetails()">
-                        <option value="">Select an Author</option>
+                        <option value="">Selectionnez un Auteur</option>
                         <?php foreach ($existingAuthors as $fullName => $details): ?>
                             <option value="<?php echo htmlspecialchars($details['firstName']. '|' . $details['lastName'] . '|' . $details['birthYear']); ?>">
                                 <?php echo htmlspecialchars($fullName); ?>
@@ -130,7 +146,10 @@ foreach ($citations as $citation) {
                 </tr>
                 <tr>
                     <th><label for="birthYear">Annee de naissance de l'auteur:</label></th>
-                    <td><input type="text" name="birthYear" pattern="\d{4}" value="<?php echo isset($_POST['birthYear']) ? htmlspecialchars($_POST['birthYear']) : ''; ?>"></td>
+                                <td><input type="number" name="birthYear" min="-10000" max="3000" 
+                                    value=
+                                    "<?php echo isset($_POST['birthYear']) ? htmlspecialchars(trim($_POST['birthYear'])) : '';?>"
+                                ></td>
                     <td><?php echo isset($birthYearError) ? $birthYearError : ''; ?></td>
                 </tr>
                 <tr>
@@ -148,20 +167,25 @@ foreach ($citations as $citation) {
             </table>
         </form>
     </article>
-    <?php if ($showCitations) { ?>
-        <section>
-            <h2>Toutes les citations</h2>
+    <?php if ($showCitations) {?>
+    <section>
+        <h2>Toutes les citations</h2>
+        <?php foreach ($existingAuthors as $fullName => $details): ?>
+            <h3><?php echo htmlspecialchars($fullName); ?> (<?php echo $details['nbCitations']; ?> <?php echo $details['nbCitations'] <= 1 ? 'citation' : 'citations'; ?>)</h3>
             <ul>
                 <?php foreach ($citations as $citation): ?>
-                <li>
-                    "<?php echo htmlspecialchars($citation->getText()); ?>"<br>
-                    - <em><?php echo htmlspecialchars($citation->getAuthor()->getFullName()); ?></em>,
-                    <?php echo htmlspecialchars($citation->getDate()); ?>
-                </li>
+                    <?php $author = $citation->getAuthor(); ?>
+                    <?php if ($author->getFullName() === $fullName && $author->getBirthYear() === $details['birthYear']) : ?>
+                        <li>
+                            "<?php echo htmlspecialchars($citation->getText()); ?>"<br>
+                            - <em><?php echo htmlspecialchars($citation->getDate()); ?></em>
+                        </li>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             </ul>
-        </section>
-    <?php }; ?>
+        <?php endforeach; ?>
+    </section>
+    <?php } ?>
 </main>
 <script>
     function fillAuthorDetails() {

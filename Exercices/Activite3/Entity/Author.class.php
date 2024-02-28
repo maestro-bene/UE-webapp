@@ -41,6 +41,20 @@ class Author
     private int $_birthYear;
 
     /**
+     * The numbor of citations the author has.
+     *
+     * @var int
+     */
+    private int $_nbCitations;
+
+    /**
+     * Array of citations associated with the author.
+     *
+     * @var array
+     */
+    private array $_citations;
+
+    /**
      * Constructor for the Author class.
      *
      * @param string $fullName  The full name of the author in the format
@@ -51,6 +65,8 @@ class Author
     {
         list($this->_firstName, $this->_lastName) = explode(' | ', $fullName);
         $this->_birthYear = $birthYear;
+        $this->_nbCitations = 0;
+        $this->_citations = [];
     }
 
     /**
@@ -91,5 +107,48 @@ class Author
     public function getBirthYear(): int
     {
         return $this->_birthYear;
+    }
+
+    /**
+     * Retrieves the number of citations the author has.
+     *
+     * @return string The number of citations of the author.
+     */
+    public function getNbCitations(): int
+    {
+        return $this->_nbCitations;
+    }
+
+    /**
+     * Increments the number of citations the author has.
+     *
+     * @return N/A
+     */
+    public function incrementNbCitations()
+    {
+        $this->_nbCitations++;
+    }
+
+    /**
+     * Adds a citation to the author's list of citations.
+     *
+     * @param Citation $citation The citation object to add.
+     *
+     * @return void
+     */
+    public function addCitation(Citation $citation): void
+    {
+        $this->_citations[] = $citation;
+        $this->incrementNbCitations();
+    }
+
+    /**
+     * Retrieves the citations associated with the author.
+     *
+     * @return array An array of Citation objects.
+     */
+    public function getCitations(): array
+    {
+        return $this->_citations;
     }
 }

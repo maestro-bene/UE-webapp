@@ -53,6 +53,7 @@ class Citation
         $this->_text = $text;
         $this->_date = $date;
         $this->_author = $author;
+        $author->addCitation($this);
     }
 
     /**
