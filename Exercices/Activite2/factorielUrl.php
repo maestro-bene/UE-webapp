@@ -4,6 +4,13 @@
 </head>
 <body>
     <?php
+     /**
+      *   Factorial function returns the factorial of the number provided
+      *
+      * @param int $n the number to calculate factorial from
+      *
+      * @return factorial of $n
+      */
     function factorial($n)
     {
         if ($n === 0) {
