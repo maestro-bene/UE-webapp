@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This trait is made to initialize citations.
  *

@@ -1,10 +1,13 @@
 <?php
+
 /**
  * A page to enter a citation in a form, and send it back to this page
  * for verification,
  * if everything is correct, we visualize all citations below the form.
  */
+
 declare(strict_types=1);
+
 error_reporting(E_ALL);
 
 require_once 'Entity/Author.class.php';
@@ -126,8 +129,8 @@ foreach ($citations as $citation) {
                     <th><label for="existingAuthors">Auteurs existants :</label></th>
                     <td><select name="existingAuthors" id="existingAuthors" onchange="fillAuthorDetails()">
                         <option value="">Selectionnez un Auteur</option>
-                        <?php foreach ($existingAuthors as $fullName => $details): ?>
-                            <option value="<?php echo htmlspecialchars($details['firstName']. '|' . $details['lastName'] . '|' . $details['birthYear']); ?>">
+                        <?php foreach ($existingAuthors as $fullName => $details) : ?>
+                            <option value="<?php echo htmlspecialchars($details['firstName'] . '|' . $details['lastName'] . '|' . $details['birthYear']); ?>">
                                 <?php echo htmlspecialchars($fullName); ?>
                             </option>
                         <?php endforeach; ?>
@@ -170,10 +173,10 @@ foreach ($citations as $citation) {
     <?php if ($showCitations) {?>
     <section>
         <h2>Toutes les citations</h2>
-        <?php foreach ($existingAuthors as $fullName => $details): ?>
+        <?php foreach ($existingAuthors as $fullName => $details) : ?>
             <h3><?php echo htmlspecialchars($fullName); ?> (<?php echo $details['nbCitations']; ?> <?php echo $details['nbCitations'] <= 1 ? 'citation' : 'citations'; ?>)</h3>
             <ul>
-                <?php foreach ($citations as $citation): ?>
+                <?php foreach ($citations as $citation) : ?>
                     <?php $author = $citation->getAuthor(); ?>
                     <?php if ($author->getFullName() === $fullName && $author->getBirthYear() === $details['birthYear']) : ?>
                         <li>

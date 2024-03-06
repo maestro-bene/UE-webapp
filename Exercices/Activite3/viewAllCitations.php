@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Displays all citations and their authors.
  *
@@ -6,7 +7,9 @@
  *
  * @package YourProjectName\Display
  */
+
 declare(strict_types=1);
+
 error_reporting(E_ALL);
 
 require_once 'Entity/Author.class.php';
@@ -42,7 +45,7 @@ function escape($string): string
 <body>
     <h1>All Citations</h1>
     <ul>
-        <?php foreach ($citations as $citation): ?>
+        <?php foreach ($citations as $citation) : ?>
             <li>
                 <?php echo escape($citation->getText()); ?><br>
                     - <em><?php echo escape($citation->getAuthor()->getFullName()); ?></em>,

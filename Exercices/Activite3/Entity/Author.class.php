@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Represents an author of citations.
  *
