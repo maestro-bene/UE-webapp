@@ -23,8 +23,6 @@ This course has me working with:
 - **Shell**: Fish 3.7.0
 - **Terminal**: kitty
 - **Terminal multiplexer**: tmux
-- **Visualisation de processus**: htop
-- **C LSP + Formatter**: C v15.0.0-clangd
 - **IDE**: Nvim v0.9.5
 
 - **Nvim**: The heart of my development, providing the IDE and tools needed to build apps with phpactor as my LSP.
