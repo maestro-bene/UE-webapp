@@ -14,11 +14,12 @@ Throughout this course, I've tackled:
 
 ## Projects and Exercises 🚀
 
-
+- `Exercises/`: The complete list of Exercises we did, split by activites, for LAMP developing.
 
 ## Tools & Technologies 🛠️
 
 This course has me working with:
+
 - **OS**: MacOS
 - **Shell**: Fish
 - **Terminal**: kitty
@@ -30,10 +31,10 @@ This course has me working with:
 - **Symfony**: The versatile PHP framework that boosts development efficiency with its reusable components, adherence to best practices, and extensive community support
 - **Git**: For version control, ensuring that every step of my development process is tracked and managed.
 
-
 ## Learning Objectives 🎯
 
 Here's what I'm set to achieve:
+
 - **End to End Application**: Building applications from scratch.
 - **Data Management**: Implementing persistent data storage to keep the user's data safe.
 
