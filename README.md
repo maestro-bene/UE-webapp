@@ -14,7 +14,7 @@ Throughout this course, I've tackled:
 
 ## Projects and Exercises 🚀
 
-- `Exercises/`: The complete list of Exercises we did, split by activites, for LAMP developing.
+- `Exercices/`: The complete list of Exercises we did, split by activites, for LAMP developing.
 
 ## Tools & Technologies 🛠️
 
