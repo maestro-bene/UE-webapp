@@ -19,6 +19,14 @@ Throughout this course, I've tackled:
 ## Tools & Technologies 🛠️
 
 This course has me working with:
+- **OS**: MacOS Sonoma 14.3
+- **Shell**: Fish 3.7.0
+- **Terminal**: kitty
+- **Terminal multiplexer**: tmux
+- **Visualisation de processus**: htop
+- **C LSP + Formatter**: C v15.0.0-clangd
+- **IDE**: Nvim v0.9.5
+
 - **Nvim**: The heart of my development, providing the IDE and tools needed to build apps with phpactor as my LSP.
 - **PHP 8.3**: The language chosen in this UE for app development, offering a robust framework through Symfony for object-oriented programming.
 - **Symfony**: The versatile PHP framework that boosts development efficiency with its reusable components, adherence to best practices, and extensive community support
