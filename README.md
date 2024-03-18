@@ -24,7 +24,7 @@ This course has me working with:
 - **Terminal**: kitty
 - **Terminal multiplexer**: tmux
 - **IDE**: Nvim v0.9.5
-
+- **MAMP**: An application that facilitates the deployment of LAMP stacks, L for Linux being replaced with M for MacOS.
 - **Nvim**: The heart of my development, providing the IDE and tools needed to build apps with phpactor as my LSP.
 - **PHP 8.3**: The language chosen in this UE for app development, offering a robust framework through Symfony for object-oriented programming.
 - **Symfony**: The versatile PHP framework that boosts development efficiency with its reusable components, adherence to best practices, and extensive community support
