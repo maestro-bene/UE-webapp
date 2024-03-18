@@ -21,7 +21,7 @@ Throughout this course, I've tackled:
 This course has me working with:
 - **Nvim**: The heart of my development, providing the IDE and tools needed to build apps with phpactor as my LSP.
 - **PHP 8.3**: The language chosen in this UE for app development, offering a robust framework through Symfony for object-oriented programming.
-- **Symfony***: The versatile PHP framework that boosts development efficiency with its reusable components, adherence to best practices, and extensive community support
+- **Symfony**: The versatile PHP framework that boosts development efficiency with its reusable components, adherence to best practices, and extensive community support
 - **Git**: For version control, ensuring that every step of my development process is tracked and managed.
 
 
